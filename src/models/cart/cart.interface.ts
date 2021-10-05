@@ -1,11 +1,14 @@
 export interface newCartI {
-    _id?: string;
+    nombre?: string;
+    precio?: number;
+    productId?: string 
   }
   
   export interface cartI {
     _id: string;
     nombre: string;
     precio: number;
+    productId: string
   }
   
   export interface cartQuery {
@@ -14,7 +17,7 @@ export interface newCartI {
   
   export interface cartBaseClass {
     get(id?: string | undefined): Promise<cartI[]>;
-    add(data: string): Promise<cartI>;
+    add(data: newCartI): Promise<cartI>;
     delete(id: string): Promise<void>;
     // query(options: cartQuery): Promise<cartI[]>;
   }

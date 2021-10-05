@@ -19,7 +19,7 @@ export class ProductosMemDAO implements ProductBaseClass {
   }
 
   findIndex(id: string) {
-    return this.productos.findIndex((aProduct) => aProduct._id == id);
+    return this.productos.findIndex((aProduct) => aProduct._id === id);
   }
 
   find(id: string): ProductI | undefined {
@@ -66,10 +66,10 @@ export class ProductosMemDAO implements ProductBaseClass {
     const query: Conditions[] = [];
 
     if (options.nombre)
-      query.push((aProduct: ProductI) => aProduct.nombre == options.nombre);
+      query.push((aProduct: ProductI) => aProduct.nombre === options.nombre);
 
     if (options.precio)
-      query.push((aProduct: ProductI) => aProduct.precio == options.precio);
+      query.push((aProduct: ProductI) => aProduct.precio === options.precio);
 
     return this.productos.filter((aProduct) => query.every((x) => x(aProduct)));
   }

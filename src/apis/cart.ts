@@ -1,20 +1,18 @@
 import { newCartI, cartI } from '../models/cart/cart.interface';
-import { CartFactoryDAO } from '../models/cart/cart.factory';
-import { TipoPersistencia } from '../models/cart/cart.factory';
-import { productsAPI } from '../apis/productos';
-
-import { cartQuery } from '../models/cart/cart.interface';
-
+import { CartFactoryDAO, TipoPersistencia } from '../models/cart/cart.factory';
+import { productsAPI } from './productos'
+ 
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-const tipo = TipoPersistencia.Memoria;
+const tipo = TipoPersistencia.LocalMongo;
 
 class CartAPI {
   private cartItems;
 
   constructor() {
     this.cartItems = CartFactoryDAO.get(tipo);
+    console.log(this.cartItems);
   }
 
   async getProducts(id: string | undefined = undefined): Promise<cartI[]> {
@@ -23,19 +21,21 @@ class CartAPI {
     return this.cartItems.get();
   }
 
-  async addProduct(cartData: string): Promise<cartI> {
-    // const product = await productsAPI.getProducts(cartData._id.toString());
-    const newCartItem = await this.cartItems.add(cartData);
+  async addProduct(productId: string): Promise<cartI> {
+    const productData = await productsAPI.getProducts(productId)
+    const queryProductData: newCartI = {
+      nombre: productData[0].nombre,
+      precio: productData[0].precio,
+      productId: productData[0]._id
+    };
+    
+    const newCartItem = await this.cartItems.add(queryProductData);
     return newCartItem;
   }
 
   async deleteCartItem(id: string) {
     await this.cartItems.delete(id);
   }
-
-  // async query(options: cartQuery) {
-  //   return await this.cartItems.query(options);
-  // }
 }
 
 export const cartAPI = new CartAPI();

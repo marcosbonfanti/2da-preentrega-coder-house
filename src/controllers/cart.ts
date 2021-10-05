@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { cartAPI } from '../apis/cart';
-// import { productsAPI } from '../apis/productos';
-// import { cartQuery } from '../models/cart/cart.interface';
 
 class Cart {
     async checkCartItemExists(req: Request, res: Response, next: NextFunction) {
-      const id = req.params.id;
+      const { id } = req.params;
       const producto = await cartAPI.getProducts(id);
       if (!producto.length) {
         return res.status(404).json({
